@@ -1,5 +1,6 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { completarLeccion } from '@/lib/gamificacion'
 
 export default function Leccion1() {
   const [tab, setTab] = useState('vocabulario')
@@ -7,6 +8,8 @@ export default function Leccion1() {
   const [voltear, setVoltear] = useState(false)
   const [respuestas, setRespuestas] = useState({})
   const [mostrarResultado, setMostrarResultado] = useState(false)
+  const [xpGuardado, setXpGuardado] = useState(false)
+  const [guardando, setGuardando] = useState(false)
 
   const vocabulario = [
     { polaco: 'Cześć', pronunciacion: 'cheshch', traduccion: 'Hola', ejemplo: 'Cześć! Jak sie masz?' },
@@ -20,35 +23,37 @@ export default function Leccion1() {
   ]
 
   const ejercicios = [
-    { pregunta: 'Como se dice "Hola" en polaco?', opciones: ['Cześć', 'Dziękuję', 'Proszę', 'Do widzenia'], correcta: 'Cześć' },
-    { pregunta: 'Que significa "Dziękuję"?', opciones: ['Hola', 'Hasta luego', 'Gracias', 'Por favor'], correcta: 'Gracias' },
-    { pregunta: 'Como se pronuncia "Tak"?', opciones: ['cheshch', 'tak', 'nye', 'PRO-she'], correcta: 'tak' },
-    { pregunta: 'Que significa "Nie"?', opciones: ['Si', 'No', 'Gracias', 'Buenos dias'], correcta: 'No' },
-    { pregunta: 'Como se dice "Hasta luego" en polaco?', opciones: ['Cześć', 'Dzień dobry', 'Do widzenia', 'Proszę'], correcta: 'Do widzenia' },
+    { pregunta: 'Como se dice Hola en polaco?', opciones: ['Cześć', 'Dziękuję', 'Proszę', 'Do widzenia'], correcta: 'Cześć' },
+    { pregunta: 'Que significa Dziękuję?', opciones: ['Hola', 'Hasta luego', 'Gracias', 'Por favor'], correcta: 'Gracias' },
+    { pregunta: 'Como se pronuncia Tak?', opciones: ['cheshch', 'tak', 'nye', 'PRO-she'], correcta: 'tak' },
+    { pregunta: 'Que significa Nie?', opciones: ['Si', 'No', 'Gracias', 'Buenos dias'], correcta: 'No' },
+    { pregunta: 'Como se dice Hasta luego en polaco?', opciones: ['Cześć', 'Dzień dobry', 'Do widzenia', 'Proszę'], correcta: 'Do widzenia' },
   ]
 
-  const seleccionarRespuesta = (idx, opcion) => {
-    setRespuestas({ ...respuestas, [idx]: opcion })
-  }
+  const seleccionarRespuesta = (idx, opcion) => setRespuestas({ ...respuestas, [idx]: opcion })
+  const calcularPuntaje = () => ejercicios.filter((ej, idx) => respuestas[idx] === ej.correcta).length
 
-  const calcularPuntaje = () => {
-    let correctas = 0
-    ejercicios.forEach((ej, idx) => {
-      if (respuestas[idx] === ej.correcta) correctas++
-    })
-    return correctas
+  useEffect(() => {
+    if (mostrarResultado && !xpGuardado) {
+      guardarProgreso()
+    }
+  }, [mostrarResultado])
+
+  const guardarProgreso = async () => {
+    setGuardando(true)
+    const puntaje = calcularPuntaje()
+    const xpGanado = puntaje >= 4 ? 20 : puntaje >= 3 ? 15 : 10
+    await completarLeccion(1, xpGanado)
+    setXpGuardado(true)
+    setGuardando(false)
   }
 
   return (
     <main className="min-h-screen bg-gray-50">
       <nav className="bg-white border-b px-6 py-4 flex justify-between items-center">
-        <a href="/cursos/polaco-a1">
-          <span className="font-bold text-gray-900">Polska</span>
-          <span className="font-bold text-red-500">Nol</span>
-        </a>
-        <a href="/cursos/polaco-a1" className="text-sm text-gray-500 hover:text-gray-900">Volver al modulo</a>
+        <a href="/cursos/polaco-a1"><span className="font-bold text-red-500">Hola</span><span className="font-bold text-gray-900">Polska</span></a>
+        <a href="/cursos/polaco-a1" className="text-sm text-gray-500">Volver al modulo</a>
       </nav>
-
       <div className="max-w-3xl mx-auto px-6 py-10">
         <div className="mb-8">
           <span className="text-sm text-red-500 font-medium">Leccion 1 · Modulo 1</span>
@@ -58,7 +63,7 @@ export default function Leccion1() {
 
         <div className="flex gap-2 mb-8 bg-white rounded-xl p-1 shadow-sm">
           {['vocabulario', 'flashcards', 'ejercicios'].map((t) => (
-            <button key={t} onClick={() => setTab(t)} className={`flex-1 py-2 rounded-lg text-sm font-medium capitalize transition-colors ${tab === t ? 'bg-red-500 text-white' : 'text-gray-500 hover:text-gray-900'}`}>
+            <button key={t} onClick={() => setTab(t)} className={"flex-1 py-2 rounded-lg text-sm font-medium capitalize transition-colors " + (tab === t ? 'bg-red-500 text-white' : 'text-gray-500 hover:text-gray-900')}>
               {t === 'vocabulario' ? 'Vocabulario' : t === 'flashcards' ? 'Flashcards' : 'Ejercicios'}
             </button>
           ))}
@@ -118,7 +123,7 @@ export default function Leccion1() {
                     <p className="font-semibold text-gray-900 mb-4">{idx + 1}. {ej.pregunta}</p>
                     <div className="grid grid-cols-2 gap-3">
                       {ej.opciones.map((op) => (
-                        <button key={op} onClick={() => seleccionarRespuesta(idx, op)} className={`p-3 rounded-xl border text-sm font-medium transition-colors ${respuestas[idx] === op ? 'bg-red-500 text-white border-red-500' : 'border-gray-200 text-gray-700 hover:border-red-300'}`}>
+                        <button key={op} onClick={() => seleccionarRespuesta(idx, op)} className={"p-3 rounded-xl border text-sm font-medium transition-colors " + (respuestas[idx] === op ? 'bg-red-500 text-white border-red-500' : 'border-gray-200 text-gray-700 hover:border-red-300')}>
                           {op}
                         </button>
                       ))}
@@ -133,10 +138,20 @@ export default function Leccion1() {
               <div className="bg-white rounded-2xl p-8 shadow-sm text-center">
                 <div className="text-6xl mb-4">{calcularPuntaje() >= 4 ? '🏆' : '💪'}</div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">{calcularPuntaje()} de {ejercicios.length} correctas</h2>
-                <p className="text-gray-500 mb-8">{calcularPuntaje() >= 4 ? 'Excelente trabajo!' : 'Sigue practicando!'}</p>
+                <p className="text-gray-500 mb-4">{calcularPuntaje() >= 4 ? 'Excelente trabajo!' : 'Sigue practicando!'}</p>
+
+                {guardando && (
+                  <p className="text-sm text-gray-400 mb-4">Guardando tu progreso...</p>
+                )}
+                {xpGuardado && !guardando && (
+                  <div className="bg-green-50 text-green-600 rounded-xl p-3 mb-6 inline-block">
+                    +{calcularPuntaje() >= 4 ? 20 : calcularPuntaje() >= 3 ? 15 : 10} XP ganados!
+                  </div>
+                )}
+
                 <div className="grid gap-4 mb-8">
                   {ejercicios.map((ej, idx) => (
-                    <div key={idx} className={`p-4 rounded-xl text-left ${respuestas[idx] === ej.correcta ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                    <div key={idx} className={"p-4 rounded-xl text-left " + (respuestas[idx] === ej.correcta ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200')}>
                       <p className="text-sm font-medium text-gray-700 mb-1">{ej.pregunta}</p>
                       <p className="text-sm text-gray-500">Tu respuesta: <span className={respuestas[idx] === ej.correcta ? 'text-green-600 font-medium' : 'text-red-600 font-medium'}>{respuestas[idx]}</span></p>
                       {respuestas[idx] !== ej.correcta && <p className="text-sm text-green-600 font-medium">Correcta: {ej.correcta}</p>}
@@ -144,8 +159,8 @@ export default function Leccion1() {
                   ))}
                 </div>
                 <div className="flex gap-4 justify-center">
-                  <button onClick={() => { setRespuestas({}); setMostrarResultado(false) }} className="px-6 py-3 border border-gray-200 rounded-xl text-gray-600">Intentar de nuevo</button>
-                  <a href="/cursos/polaco-a1" className="px-6 py-3 bg-red-500 text-white rounded-xl font-semibold">Siguiente leccion</a>
+                  <button onClick={() => { setRespuestas({}); setMostrarResultado(false); setXpGuardado(false) }} className="px-6 py-3 border border-gray-200 rounded-xl text-gray-600">Intentar de nuevo</button>
+                  <a href="/cursos/polaco-a1/leccion-2" className="px-6 py-3 bg-red-500 text-white rounded-xl font-semibold">Siguiente leccion</a>
                 </div>
               </div>
             )}

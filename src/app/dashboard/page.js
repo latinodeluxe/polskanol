@@ -1,18 +1,39 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { calcularNivel, contarLeccionesCompletadas } from '@/lib/gamificacion'
 
 export default function Dashboard() {
   const [usuario, setUsuario] = useState(null)
   const [cargando, setCargando] = useState(true)
+  const [stats, setStats] = useState({ xp: 0, racha: 0, lecciones: 0, palabras: 0 })
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (!user) { window.location.href = '/login'; return }
-      setUsuario(user)
-      setCargando(false)
-    })
+    cargarDatos()
   }, [])
+
+  const cargarDatos = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) { window.location.href = '/login'; return }
+    setUsuario(user)
+
+    const { data: perfil } = await supabase
+      .from('usuarios')
+      .select('xp, racha_dias')
+      .eq('id', user.id)
+      .single()
+
+    const lecciones = await contarLeccionesCompletadas()
+
+    setStats({
+      xp: perfil?.xp || 0,
+      racha: perfil?.racha_dias || 0,
+      lecciones: lecciones,
+      palabras: lecciones * 8
+    })
+
+    setCargando(false)
+  }
 
   const cerrarSesion = async () => {
     await supabase.auth.signOut()
@@ -24,6 +45,11 @@ export default function Dashboard() {
       <p className="text-gray-500">Cargando...</p>
     </main>
   )
+
+  const nivelInfo = calcularNivel(stats.xp)
+  const progresoNivel = nivelInfo.xpSiguiente
+    ? Math.round((stats.xp / nivelInfo.xpSiguiente) * 100)
+    : 100
 
   const modulos = [
     { num: 1, titulo: 'Saludos y presentaciones', icono: '👋', href: '/cursos/polaco-a1' },
@@ -57,21 +83,37 @@ export default function Dashboard() {
           <p className="text-gray-500 mt-1">Continua tu aprendizaje del polaco</p>
         </div>
 
+        <div className="bg-white rounded-2xl shadow-sm p-6 mb-10 flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <p className="text-sm text-gray-400">Nivel {nivelInfo.nivel}</p>
+            <p className="text-xl font-bold text-gray-900">{nivelInfo.nombre}</p>
+          </div>
+          <div className="flex-1 min-w-[200px]">
+            <div className="flex justify-between text-xs text-gray-400 mb-1">
+              <span>{stats.xp} XP</span>
+              {nivelInfo.xpSiguiente && <span>{nivelInfo.xpSiguiente} XP</span>}
+            </div>
+            <div className="w-full bg-gray-100 rounded-full h-2">
+              <div className="bg-red-500 h-2 rounded-full transition-all" style={{ width: progresoNivel + '%' }}></div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           <div className="bg-white rounded-2xl p-6 shadow-sm text-center">
-            <div className="text-3xl font-bold text-red-500">0</div>
+            <div className="text-3xl font-bold text-red-500">{stats.xp}</div>
             <div className="text-sm text-gray-500 mt-1">XP total</div>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-sm text-center">
-            <div className="text-3xl font-bold text-orange-500">0</div>
+            <div className="text-3xl font-bold text-orange-500">{stats.racha}</div>
             <div className="text-sm text-gray-500 mt-1">Racha de dias</div>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-sm text-center">
-            <div className="text-3xl font-bold text-blue-500">0</div>
+            <div className="text-3xl font-bold text-blue-500">{stats.lecciones}</div>
             <div className="text-sm text-gray-500 mt-1">Lecciones</div>
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-sm text-center">
-            <div className="text-3xl font-bold text-green-500">0</div>
+            <div className="text-3xl font-bold text-green-500">{stats.palabras}</div>
             <div className="text-sm text-gray-500 mt-1">Palabras</div>
           </div>
         </div>
@@ -81,9 +123,9 @@ export default function Dashboard() {
             <h2 className="text-xl font-bold text-gray-900">Polaco A1</h2>
             <span className="bg-red-50 text-red-500 text-xs font-medium px-3 py-1 rounded-full">En progreso</span>
           </div>
-          <p className="text-gray-500 text-sm mb-6">Nivel basico desde cero · 100 lecciones</p>
+          <p className="text-gray-500 text-sm mb-6">Nivel basico desde cero · {stats.lecciones} de 100 lecciones</p>
           <div className="w-full bg-gray-100 rounded-full h-3 mb-6">
-            <div className="bg-red-500 h-3 rounded-full w-0"></div>
+            <div className="bg-red-500 h-3 rounded-full transition-all" style={{ width: stats.lecciones + '%' }}></div>
           </div>
           <a href="/cursos/polaco-a1" className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-3 rounded-xl transition-colors">
             Continuar aprendiendo
