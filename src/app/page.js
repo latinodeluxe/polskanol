@@ -1,12 +1,12 @@
 export default function Home() {
   const modulos = [
     { titulo: 'Aprender Polaco', desc: 'Curso completo A1 con 100 lecciones, ejercicios y gamificacion', icono: '🇵🇱', href: '/idioma', activo: true },
-    { titulo: 'Vivir en Polonia', desc: 'Alquiler, banco, SIM, transporte, salud, PESEL, trabajo e impuestos', icono: '🏠', href: '/vivir-en-polonia', activo: false },
-    { titulo: 'Legalidad', desc: 'Residencia, visas, derechos laborales, contratos y tramites', icono: '⚖️', href: '/legalidad', activo: false },
-    { titulo: 'Cultura', desc: 'Costumbres, educacion, relaciones sociales y normas culturales', icono: '🎭', href: '/cultura', activo: false },
-    { titulo: 'Herramientas', desc: 'Calculadoras, conversor PLN, traductor y plantillas', icono: '🛠️', href: '/herramientas', activo: false },
-    { titulo: 'Comunidad', desc: 'Eventos, noticias, foro y directorio de empresas latinas', icono: '🤝', href: '/comunidad', activo: false },
-    { titulo: 'Recursos', desc: 'Descargas, guias en PDF, checklists y videos', icono: '📚', href: '/recursos', activo: false },
+    { titulo: 'Vivir en Polonia', desc: 'Alquiler, banco, SIM, transporte, salud, PESEL, trabajo e impuestos', icono: '🏠', href: '/vivir-en-polonia', activo: true },
+    { titulo: 'Legalidad', desc: 'Residencia, visas, derechos laborales, contratos y tramites', icono: '⚖️', href: '/legalidad', activo: true },
+    { titulo: 'Cultura', desc: 'Costumbres, educacion, relaciones sociales y normas culturales', icono: '🎭', href: '/cultura', activo: true },
+    { titulo: 'Herramientas', desc: 'Calculadoras, conversor PLN, traductor y plantillas', icono: '🛠️', href: '/herramientas', activo: true },
+    { titulo: 'Comunidad', desc: 'Eventos, noticias, foro y directorio de empresas latinas', icono: '🤝', href: '/comunidad', activo: true },
+    { titulo: 'Recursos', desc: 'Descargas, guias en PDF, checklists y videos', icono: '📚', href: '/recursos', activo: true },
   ]
 
   return (
@@ -43,16 +43,12 @@ export default function Home() {
           <h2 className="text-3xl font-bold text-center text-gray-900 mb-16">Todo lo que necesitas en un solo lugar</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {modulos.map((m) => (
-              <a key={m.titulo} href={m.href} className={"bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 " + (m.activo ? "ring-2 ring-red-500" : "")}>
+              <a key={m.titulo} href={m.href} className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow flex items-start gap-4 ring-2 ring-red-500">
                 <div className="text-4xl">{m.icono}</div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <h3 className="text-xl font-bold text-gray-900">{m.titulo}</h3>
-                    {m.activo ? (
-                      <span className="text-xs bg-red-50 text-red-500 px-2 py-0.5 rounded-full font-medium">Disponible</span>
-                    ) : (
-                      <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">Proximamente</span>
-                    )}
+                    <span className="text-xs bg-red-50 text-red-500 px-2 py-0.5 rounded-full font-medium">Disponible</span>
                   </div>
                   <p className="text-gray-500 text-sm">{m.desc}</p>
                 </div>

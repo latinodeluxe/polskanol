@@ -29,7 +29,7 @@ export default function Dashboard() {
       xp: perfil?.xp || 0,
       racha: perfil?.racha_dias || 0,
       lecciones: lecciones,
-      palabras: lecciones * 8
+      palabras: lecciones > 0 ? lecciones * 8 : 0
     })
 
     setCargando(false)
@@ -114,7 +114,7 @@ export default function Dashboard() {
           </div>
           <div className="bg-white rounded-2xl p-6 shadow-sm text-center">
             <div className="text-3xl font-bold text-green-500">{stats.palabras}</div>
-            <div className="text-sm text-gray-500 mt-1">Palabras</div>
+            <div className="text-sm text-gray-500 mt-1">Vocabulario</div>
           </div>
         </div>
 

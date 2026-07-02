@@ -13,6 +13,7 @@ export default function LeccionDinamica() {
   const [ejercicios, setEjercicios] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState(null)
+  const [usuarioAutenticado, setUsuarioAutenticado] = useState(false)
 
   const [tab, setTab] = useState('vocabulario')
   const [tarjetaActual, setTarjetaActual] = useState(0)
@@ -23,8 +24,18 @@ export default function LeccionDinamica() {
   const [guardando, setGuardando] = useState(false)
 
   useEffect(() => {
-    cargarLeccion()
+    verificarAuth()
   }, [numeroLeccion])
+
+  const verificarAuth = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      window.location.href = '/idioma/login'
+      return
+    }
+    setUsuarioAutenticado(true)
+    cargarLeccion()
+  }
 
   const cargarLeccion = async () => {
     setCargando(true)
@@ -94,7 +105,7 @@ export default function LeccionDinamica() {
       <main className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <p className="text-gray-500 mb-4">Leccion no encontrada</p>
-          <a href="/idioma/dashboard" className="text-red-500 font-medium">Volver al inicio</a>
+          <a href="/idioma/dashboard" className="text-red-500 font-medium">Volver al dashboard</a>
         </div>
       </main>
     )
@@ -102,7 +113,7 @@ export default function LeccionDinamica() {
 
   const moduloNum = Math.ceil(numeroLeccion / 10)
   const siguienteLeccion = numeroLeccion + 1
-  const moduloHref = '/cursos/polaco-a1/modulo-' + moduloNum
+  const moduloHref = moduloNum === 1 ? '/idioma/cursos/polaco-a1' : '/idioma/cursos/polaco-a1/modulo-' + moduloNum
 
   return (
     <main className="min-h-screen bg-gray-50">
@@ -194,14 +205,12 @@ export default function LeccionDinamica() {
               <div className="bg-white rounded-2xl p-8 shadow-sm text-center">
                 <div className="text-6xl mb-4">{calcularPuntaje() >= ejercicios.length * 0.6 ? '🏆' : '💪'}</div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">{calcularPuntaje()} de {ejercicios.length} correctas</h2>
-
                 {guardando && <p className="text-sm text-gray-400 mb-4">Guardando tu progreso...</p>}
                 {xpGuardado && !guardando && (
                   <div className="bg-green-50 text-green-600 rounded-xl p-3 mb-6 inline-block">
-                    +XP ganados!
+                    +{calcularPuntaje() >= ejercicios.length * 0.8 ? 20 : calcularPuntaje() >= ejercicios.length * 0.6 ? 15 : 10} XP ganados!
                   </div>
                 )}
-
                 <div className="grid gap-4 mb-8 mt-6">
                   {ejercicios.map((ej, idx) => (
                     <div key={ej.id} className={"p-4 rounded-xl text-left " + (respuestas[idx] === ej.respuesta_correcta ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200')}>
@@ -213,7 +222,9 @@ export default function LeccionDinamica() {
                 </div>
                 <div className="flex gap-4 justify-center">
                   <button onClick={() => { setRespuestas({}); setMostrarResultado(false); setXpGuardado(false) }} className="px-6 py-3 border border-gray-200 rounded-xl text-gray-600">Intentar de nuevo</button>
-                  <a href={"/idioma/curso/" + siguienteLeccion} className="px-6 py-3 bg-red-500 text-white rounded-xl font-semibold">Siguiente leccion</a>
+                  {siguienteLeccion <= 100 && (
+                    <a href={"/idioma/curso/" + siguienteLeccion} className="px-6 py-3 bg-red-500 text-white rounded-xl font-semibold">Siguiente leccion</a>
+                  )}
                 </div>
               </div>
             )}
