@@ -1,48 +1,78 @@
-export default function PrivacyPage() {
+export default function Privacy() {
   return (
-    <main style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-      <h1>Política de Privacidad</h1>
-      <p><em>Última actualización: 30 de junio de 2026</em></p>
-      
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>1. Introducción</h2>
-        <p>En HolaPolska, la protección de tus datos personales es nuestra prioridad. Esta política describe qué información recopilamos cuando utilizas nuestra plataforma y cómo la tratamos para mejorar tu experiencia de integración en Polonia.</p>
-      </section>
+    <main className="min-h-screen bg-gray-50">
+      <nav className="bg-white border-b px-6 py-4 flex justify-between items-center">
+        <a href="/"><span className="font-bold text-red-500">Hola</span><span className="font-bold text-gray-900">Polska</span></a>
+        <a href="/" className="text-sm text-gray-500">Volver al inicio</a>
+      </nav>
+      <div className="max-w-3xl mx-auto px-6 py-16">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Politica de Privacidad</h1>
+        <p className="text-gray-500 mb-10">Ultima actualizacion: 1 de julio de 2026</p>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>2. Datos que recopilamos</h2>
-        <p>Recopilamos únicamente la información necesaria para el funcionamiento de los servicios:</p>
-        <ul>
-          <li><strong>Datos de cuenta:</strong> Nombre, dirección de correo electrónico y nivel de idioma.</li>
-          <li><strong>Datos de uso:</strong> Progreso en los cursos, rachas de aprendizaje y logros obtenidos.</li>
-          <li><strong>Datos técnicos:</strong> Información básica de conexión necesaria para mantener la seguridad de tu sesión (autenticación).</li>
-        </ul>
-      </section>
+        <div className="prose prose-lg max-w-none space-y-8">
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">1. Responsable del tratamiento</h2>
+            <div className="bg-white rounded-xl p-6 shadow-sm text-gray-700 space-y-1">
+              <p><strong>Nombre:</strong> Pablo Sebastian Cupajita Chitiva</p>
+              <p><strong>Proyecto:</strong> HolaPolska</p>
+              <p><strong>Pais de operacion:</strong> Polonia (Union Europea)</p>
+              <p><strong>Correo de contacto:</strong> <a href="mailto:lavozlatinapl@gmail.com" className="text-red-500">lavozlatinapl@gmail.com</a></p>
+            </div>
+          </section>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>3. Finalidad del tratamiento</h2>
-        <p>Utilizamos tus datos para:</p>
-        <ul>
-          <li>Gestionar tu registro y acceso a la plataforma.</li>
-          <li>Personalizar tu experiencia de aprendizaje y gamificación.</li>
-          <li>Enviar notificaciones relevantes sobre el progreso de tus cursos o eventos de la comunidad.</li>
-        </ul>
-      </section>
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">2. Datos que recopilamos y por que</h2>
+            <p className="text-gray-700 mb-4">Recopilamos unicamente los datos necesarios para prestarte el servicio:</p>
+            <div className="space-y-4">
+              <div className="bg-white rounded-xl p-5 shadow-sm">
+                <p className="font-semibold text-gray-900 mb-1">Al registrarte</p>
+                <p className="text-gray-600 text-sm">Nombre, correo electronico y contrasena. Base legal: ejecucion de un contrato (Art. 6.1.b RGPD) — necesario para prestarte el servicio de aprendizaje.</p>
+              </div>
+              <div className="bg-white rounded-xl p-5 shadow-sm">
+                <p className="font-semibold text-gray-900 mb-1">Al usar el curso</p>
+                <p className="text-gray-600 text-sm">Progreso de lecciones, XP acumulado y racha diaria. Base legal: ejecucion del contrato (Art. 6.1.b RGPD) — necesario para guardar tu avance.</p>
+              </div>
+              <div className="bg-white rounded-xl p-5 shadow-sm">
+                <p className="font-semibold text-gray-900 mb-1">Datos tecnicos</p>
+                <p className="text-gray-600 text-sm">Logs de acceso basicos gestionados por Supabase y Vercel. Base legal: interes legitimo (Art. 6.1.f RGPD) — seguridad e integridad del servicio.</p>
+              </div>
+            </div>
+          </section>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>4. Tus derechos (GDPR/RODO)</h2>
-        <p>De acuerdo con la normativa vigente en Polonia y la Unión Europea, tienes derecho a:</p>
-        <ul>
-          <li>Acceder, rectificar o eliminar tus datos personales en cualquier momento.</li>
-          <li>Solicitar la limitación del tratamiento de tus datos.</li>
-          <li>Retirar tu consentimiento para el tratamiento de datos para fines específicos.</li>
-        </ul>
-      </section>
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">3. Transferencias internacionales de datos</h2>
+            <p className="text-gray-700">Utilizamos los siguientes proveedores que pueden procesar datos fuera del EEE:</p>
+            <ul className="space-y-2 text-gray-700 mt-3">
+              <li>• <strong>Supabase Inc.</strong> (EE.UU.) — base de datos y autenticacion. Cumple el Marco de Privacidad UE-EE.UU.</li>
+              <li>• <strong>Vercel Inc.</strong> (EE.UU.) — alojamiento web. Cumple el Marco de Privacidad UE-EE.UU.</li>
+            </ul>
+          </section>
 
-      <section>
-        <h2>5. Seguridad de la información</h2>
-        <p>Implementamos medidas técnicas de seguridad (como Supabase Auth y Row Level Security) para proteger tu información contra el acceso no autorizado o la divulgación indebida.</p>
-      </section>
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">4. Plazo de conservacion</h2>
+            <p className="text-gray-700">Conservamos tus datos mientras mantengas tu cuenta activa. Si eliminas tu cuenta, tus datos personales se eliminaran en un plazo maximo de 30 dias, salvo obligacion legal de conservacion.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">5. Tus derechos</h2>
+            <p className="text-gray-700 mb-3">Bajo el RGPD tienes derecho a:</p>
+            <ul className="space-y-2 text-gray-700">
+              <li>• <strong>Acceso:</strong> solicitar copia de tus datos personales</li>
+              <li>• <strong>Rectificacion:</strong> corregir datos incorrectos</li>
+              <li>• <strong>Supresion:</strong> solicitar la eliminacion de tu cuenta y datos</li>
+              <li>• <strong>Portabilidad:</strong> recibir tus datos en formato estructurado</li>
+              <li>• <strong>Oposicion:</strong> oponerte a determinados tratamientos</li>
+              <li>• <strong>Reclamacion:</strong> presentar reclamacion ante la UODO (autoridad polaca de proteccion de datos) en <a href="https://uodo.gov.pl" className="text-red-500">uodo.gov.pl</a></li>
+            </ul>
+            <p className="text-gray-700 mt-3">Para ejercer cualquier derecho: <a href="mailto:lavozlatinapl@gmail.com" className="text-red-500">lavozlatinapl@gmail.com</a>. Responderemos en un plazo maximo de 30 dias.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">6. Seguridad</h2>
+            <p className="text-gray-700">Implementamos medidas tecnicas de seguridad incluyendo cifrado en transito (HTTPS), politicas de control de acceso a nivel de base de datos (RLS en Supabase) y autenticacion segura gestionada por Supabase Auth.</p>
+          </section>
+        </div>
+      </div>
     </main>
-  );
+  )
 }

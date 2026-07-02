@@ -1,28 +1,51 @@
-export default function CopyrightPage() {
+export default function Copyright() {
   return (
-    <main style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto', fontFamily: 'sans-serif' }}>
-      <h1>Aviso de Derechos de Autor (Copyright)</h1>
-      <p><em>Última actualización: 30 de junio de 2026</em></p>
-      
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>1. Titularidad</h2>
-        <p>Todos los derechos de autor, derechos de base de datos y otros derechos de propiedad intelectual sobre el contenido de HolaPolska (incluyendo, sin limitación, textos, gráficos, logotipos, iconos, imágenes, clips de audio, descargas digitales y compilaciones de datos) son propiedad de LatinoDeluxe.</p>
-      </section>
+    <main className="min-h-screen bg-gray-50">
+      <nav className="bg-white border-b px-6 py-4 flex justify-between items-center">
+        <a href="/"><span className="font-bold text-red-500">Hola</span><span className="font-bold text-gray-900">Polska</span></a>
+        <a href="/" className="text-sm text-gray-500">Volver al inicio</a>
+      </nav>
+      <div className="max-w-3xl mx-auto px-6 py-16">
+        <h1 className="text-4xl font-bold text-gray-900 mb-2">Derechos de Autor</h1>
+        <p className="text-gray-500 mb-10">Ultima actualizacion: 1 de julio de 2026</p>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>2. Uso Permitido</h2>
-        <p>El acceso a nuestro contenido es para tu uso personal y educativo únicamente. No está permitido descargar, copiar, reproducir, distribuir, transmitir o explotar nuestro material con fines comerciales sin obtener una licencia o permiso por escrito de nuestra parte.</p>
-      </section>
+        <div className="prose prose-lg max-w-none space-y-8">
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">1. Titular de los derechos</h2>
+            <p className="text-gray-700">El contenido original publicado en HolaPolska — incluyendo textos, estructura del curso, ejercicios, articulos informativos y diseno de la plataforma — es titularidad de <strong>Pablo Sebastian Cupajita Chitiva</strong>, creador y responsable del proyecto.</p>
+            <p className="text-gray-700 mt-3">HolaPolska es el nombre comercial del proyecto. No constituye una marca registrada en la Urzad Patentowy RP ni en la EUIPO. El nombre y la identidad visual del proyecto estan protegidos como obra por la legislacion de propiedad intelectual polaca (Ustawa o prawie autorskim i prawach pokrewnych).</p>
+          </section>
 
-      <section style={{ marginBottom: '1.5rem' }}>
-        <h2>3. Marca Registrada</h2>
-        <p>El nombre "HolaPolska" y su marca visual son activos protegidos. Queda prohibido el uso de nuestros logotipos o nombre comercial en cualquier otra plataforma sin nuestra autorización expresa.</p>
-      </section>
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">2. Usos permitidos</h2>
+            <ul className="space-y-2 text-gray-700">
+              <li>• Uso personal y no comercial del contenido publicado</li>
+              <li>• Reproduccion parcial con fines educativos o informativos, citando la fuente como "HolaPolska (holapolska.vercel.app)"</li>
+              <li>• Compartir enlaces directos a la plataforma</li>
+            </ul>
+          </section>
 
-      <section>
-        <h2>4. Reclamaciones por Infracción</h2>
-        <p>Tomamos muy en serio la protección de nuestra propiedad intelectual. Si detectamos contenido plagiado de nuestra plataforma en otros sitios web, tomaremos las medidas legales correspondientes de acuerdo con la legislación polaca e internacional.</p>
-      </section>
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">3. Usos prohibidos</h2>
+            <ul className="space-y-2 text-gray-700">
+              <li>• Reproduccion total del contenido sin autorizacion expresa</li>
+              <li>• Uso comercial del contenido sin acuerdo previo por escrito</li>
+              <li>• Crear obras derivadas con fines comerciales</li>
+              <li>• Presentar el contenido de HolaPolska como propio</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">4. Contenido de terceros</h2>
+            <p className="text-gray-700">Algunos articulos informativos referencian fuentes oficiales polacas y europeas. Esas fuentes mantienen sus propios derechos. HolaPolska no reproduce contenido protegido de terceros sin autorizacion.</p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-gray-900 mb-3">5. Reclamaciones</h2>
+            <p className="text-gray-700">Si consideras que algun contenido de HolaPolska vulnera tus derechos de autor, contacta a: <a href="mailto:lavozlatinapl@gmail.com" className="text-red-500">lavozlatinapl@gmail.com</a>. Responderemos en un plazo maximo de 14 dias habiles.</p>
+          </section>
+        </div>
+      </div>
     </main>
-  );
+  )
 }
